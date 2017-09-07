@@ -1,0 +1,30 @@
+
+On Windows, if args is a sequence, it will be converted to a string in a manner described in Converting an argument sequence to a string on Windows. This is because the underlying CreateProcess() operates on strings.
+
+The shell argument (which defaults to False) specifies whether to use the shell as the program to execute. If shell is True, it is recommended to pass args as a string rather than as a sequence.
+
+On Unix with shell=True, the shell defaults to /bin/sh. If args is a string, the string specifies the command to execute through the shell. This means that the string must be formatted exactly as it would be when typed at the shell prompt. This includes, for example, quoting or backslash escaping filenames with spaces in them. If args is a sequence, the first item specifies the command string, and any additional items will be treated as additional arguments to the shell itself. That is to say, Popen does the equivalent of:
+
+Popen(['/bin/sh', '-c', args[0], args[1], ...])
+On Windows with shell=True, the COMSPEC environment variable specifies the default shell. The only time you need to specify shell=True on Windows is when the command you wish to execute is built into the shell (e.g. dir or copy). You do not need shell=True to run a batch file or console-based executable.
+
+Warning Passing shell=True can be a security hazard if combined with untrusted input. See the warning under Frequently Used Arguments for details.
+bufsize, if given, has the same meaning as the corresponding argument to the built-in open() function: 0 means unbuffered, 1 means line buffered, any other positive value means use a buffer of (approximately) that size. A negative bufsize means to use the system default, which usually means fully buffered. The default value for bufsize is 0 (unbuffered).
+
+
+
+
+2017-08-18T22:38:54.238+03:00  RUNIC ERROR Problem 93, Error 702.37: Схема обеспечения безопасности указывает на то, что проигрывателю не удалось завершить воспроизведение текущего мультимедийного файла в назначенное время, и, возможно, требуется перезагрузка. Если проблема сохраняется, свяжитесь со службой технической поддержки.|Ошибка 702.37: (csebill) Ошибка в завершении воспроизведения медиа-объекта "T_promo_03[53618826401].scb" продолжительностью 00:00:15 после 00:03:15.|(2017081800012659)
+
+
+The executable argument specifies a replacement program to execute. It is very seldom needed. When shell=False, executable replaces the program to execute specified by args. However, the original args is still passed to the program. Most programs treat the program specified by args as the command name, which can then be different from the program actually executed. On Unix, the args name becomes the display name for the executable in utilities such as ps. If shell=True, on Unix the executable argument specifies a replacement shell for the default /bin/sh.
+
+stdin, stdout and stderr specify the executed program’s standard input, standard output and standard error file handles, respectively. Valid values are PIPE, an existing file descriptor (a positive integer), an existing file object, and None. PIPE indicates that a new pipe to the child should be created. With the default settings of None, no redirection will occur; the child’s file handles will be inherited from the parent. Additionally, stderr can be STDOUT, which indicates that the stderr data from the child process should be captured into the same file handle as for stdout.
+
+If preexec_fn is set to a callable object, this object will be called in the child process just before the child is executed. (Unix only)
+
+If close_fds is true, all file descriptors except 0, 1 and 2 will be closed before the child process is executed. (Unix only). Or, on Windows, if close_fds is true then no handles will be inherited by the child process. Note that on Windows, you cannot set close_fds to true and also redirect the standard handles by setting stdin, stdout or stderr.
+
+If cwd is not None, the child’s current directory will be changed to cwd before it is executed. Note that this directory is not considered when searching the executable, so you can’t specify the program’s path relative to cwd.
+
+If env is not None, it must be a mapping that defines the environment variables for the new process; these are used instead of inheriting the current process’ environment, which is the default behavior.
